@@ -1,0 +1,28 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+
+/* NAVBAR */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+
+/* আপনার CSS ফাইলের যেকোনো জায়গায় */
+html {
+  scroll-behavior: smooth;
+}
