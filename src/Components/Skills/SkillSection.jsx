@@ -43,11 +43,12 @@ const SkillSection = () => {
         const engine = engineRef.current;
         const container = containerRef.current;
         const scene = sceneRef.current;
-        if (!container || !scene) return;
+
+        // Mobile check: Desktop/Tablet na hole physics start hobe na
+        if (!container || !scene || window.innerWidth < 1024) return;
 
         const width = container.clientWidth;
         const height = container.clientHeight;
-        const isMobile = window.innerWidth < 640;
 
         const render = Matter.Render.create({
             element: scene,
@@ -55,13 +56,13 @@ const SkillSection = () => {
             options: {
                 width,
                 height,
-                background: 'transparent', // Matter.js background set to transparent
+                background: 'transparent',
                 wireframes: false,
                 pixelRatio: window.devicePixelRatio
             }
         });
 
-        const mouseBody = Matter.Bodies.circle(0, 0, isMobile ? 30 : 40, {
+        const mouseBody = Matter.Bodies.circle(0, 0, 40, {
             isStatic: true, render: { visible: false }
         });
 
@@ -81,7 +82,7 @@ const SkillSection = () => {
 
         const allSkillItems = Object.values(SKILLS_DATA).flatMap(cat => cat.items);
         const balls = allSkillItems.map((skill, i) => {
-            const visualRadius = isMobile ? 14 : 27;
+            const visualRadius = 27;
             const collisionRadius = visualRadius + 3;
 
             return Matter.Bodies.circle(width / 2 + (Math.random() * 40 - 20), -50 - (i * 40), collisionRadius, {
@@ -89,7 +90,7 @@ const SkillSection = () => {
                 friction: 0.1,
                 render: {
                     sprite: {
-                        texture: createNeonBubble(skill.name, skill.color, visualRadius, isMobile)
+                        texture: createNeonBubble(skill.name, skill.color, visualRadius, false)
                     }
                 }
             });
@@ -106,9 +107,6 @@ const SkillSection = () => {
 
         container.addEventListener('mousemove', handleInteraction);
         container.addEventListener('mouseleave', handleEnd);
-        container.addEventListener('touchstart', handleInteraction, { passive: true });
-        container.addEventListener('touchmove', handleInteraction, { passive: true });
-        container.addEventListener('touchend', handleEnd);
 
         Matter.World.add(engine.world, [...bowlWalls, ...balls, mouseBody]);
         Matter.Runner.run(Matter.Runner.create(), engine);
@@ -126,24 +124,23 @@ const SkillSection = () => {
 
     const createNeonBubble = (text, color, radius, isMobile) => {
         const canvas = document.createElement('canvas');
-        const size = isMobile ? 80 : 120; canvas.width = size; canvas.height = size;
+        const size = 120; canvas.width = size; canvas.height = size;
         const ctx = canvas.getContext('2d');
         const centerX = size / 2; const centerY = size / 2;
 
         ctx.shadowBlur = 12; ctx.shadowColor = color;
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-        ctx.strokeStyle = color; ctx.lineWidth = isMobile ? 2 : 3; ctx.stroke();
+        ctx.strokeStyle = color; ctx.lineWidth = 3; ctx.stroke();
 
         ctx.fillStyle = "#ffffff";
-        ctx.font = `bold ${isMobile ? '9px' : '11px'} sans-serif`;
-        ctx.textAlign = "center"; ctx.fillText(text, centerX, centerY + (isMobile ? 3 : 4));
+        ctx.font = `bold 11px sans-serif`;
+        ctx.textAlign = "center"; ctx.fillText(text, centerX, centerY + 4);
 
         return canvas.toDataURL();
     };
 
     return (
-        // bg-black was removed to make it transparent
         <section id='skill' className="relative min-h-screen py-24 bg-transparent flex flex-col items-center justify-center overflow-hidden">
             <div className="relative z-10 w-full max-w-[1400px] px-6 md:px-12 grid grid-cols-1 lg:grid-cols-3 gap-y-12 lg:gap-x-20 items-center">
 
@@ -152,7 +149,8 @@ const SkillSection = () => {
                     <CategoryCard data={SKILLS_DATA.backend} />
                 </div>
 
-                <div className="flex flex-col items-center order-1 lg:order-2">
+                {/* Physics Container: Hidden on mobile (hidden), shown on Large screens (lg:flex) */}
+                <div className="hidden lg:flex flex-col items-center order-1 lg:order-2">
                     <div className="relative w-full max-w-[300px] aspect-square sm:max-w-[400px] md:max-w-[480px]" ref={containerRef}>
                         <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-30 w-full text-center">
                             <h2 className="text-white font-black text-2xl md:text-4xl italic tracking-tighter uppercase">
@@ -163,7 +161,7 @@ const SkillSection = () => {
                         {/* Glass Bowl Visual */}
                         <div className="absolute inset-0 bg-white/[0.03] backdrop-blur-2xl rounded-b-[150px] md:rounded-b-[240px] border-b border-x border-white/10 shadow-2xl z-10 pointer-events-none" />
 
-                        {/* Energy Glow Background (Kept subtle for contrast) */}
+                        {/* Energy Glow Background */}
                         <div className="absolute inset-0 rounded-b-[240px] overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/10 to-transparent opacity-30" />
                         </div>
@@ -171,6 +169,13 @@ const SkillSection = () => {
                         {/* Physics Canvas */}
                         <div ref={sceneRef} className="absolute inset-0 z-20 overflow-hidden rounded-b-[150px] md:rounded-b-[240px]" />
                     </div>
+                </div>
+
+                {/* Mobile Title: Displayed only on small screens because the main vault is hidden */}
+                <div className="lg:hidden text-center order-1">
+                    <h2 className="text-white font-black text-3xl italic tracking-tighter uppercase">
+                        SKILL <span className="text-cyan-400 opacity-50">VAULT</span>
+                    </h2>
                 </div>
 
                 <div className="space-y-8 order-3">

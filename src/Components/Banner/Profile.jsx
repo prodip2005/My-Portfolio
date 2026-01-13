@@ -86,7 +86,7 @@ const Profile = () => {
                             <Terminal size={14} className="text-cyan-400" />
                         </div>
                         <span className="text-cyan-400 text-[8px] lg:text-[10px] font-bold tracking-[0.3em] lg:tracking-[0.4em] uppercase">
-                            MERN Stack Solutions Architect
+                            Full Stact Developer and Machine Learning aspharent
                         </span>
                     </motion.div>
 

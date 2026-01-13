@@ -52,7 +52,7 @@ const Achievements = () => {
 
                     <div className="md:text-right md:pb-4 shrink-0">
                         <p className="text-white/40 max-w-xs text-sm leading-relaxed mb-6">
-                            A curated list of my professional milestones and creative achievements.
+                            Acurated list of my professional milestones and creative achievements.
                         </p>
                         <div className="h-1.5 w-24 bg-gradient-to-r from-cyan-500 to-blue-600 ml-auto hidden md:block rounded-full" />
                     </div>

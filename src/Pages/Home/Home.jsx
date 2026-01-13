@@ -13,14 +13,14 @@ const Home = () => {
     return (
         <div className="relative overflow-x-hidden">
             <SocialSidebar />
-            <Profile />
-            <About />
-            <SkillSection />
-            <Experience />
-            <Projects />
-            <Achievements />
-            <Certificate />
-            <Contact/>
+            <div id="home"><Profile /></div>
+            <div id="about"><About /></div>
+            <div id="skill"><SkillSection /></div>
+            <div id="experience"><Experience /></div>
+            <div id="projects"><Projects /></div>
+            <div id="achievements"><Achievements /></div>
+            <div id="certificates"><Certificate /></div>
+           
             {/* Other sections like Projects, Experience can be added here */}
         </div>
     );
