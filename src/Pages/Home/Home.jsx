@@ -21,7 +21,6 @@ const Home = () => {
             <div id="achievements"><Achievements /></div>
             <div id="certificates"><Certificate /></div>
            
-            {/* Other sections like Projects, Experience can be added here */}
         </div>
     );
 };

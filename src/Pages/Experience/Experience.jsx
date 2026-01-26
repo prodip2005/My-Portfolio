@@ -1,39 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
-
-const JOURNEY_DATA = [
-    {
-        title: "Future Frontier",
-        subtitle: "Full Stack Architect",
-        desc: "Mastering cloud-native solutions, system design, and AI-driven development.",
-        date: "2025 & Beyond",
-        color: "#a855f7"
-    },
-    {
-        title: "The Build Era",
-        subtitle: "Modern Web Specialist",
-        desc: "Forging high-performance applications with React & Next.js.",
-        date: "2023 - 2024",
-        color: "#22d3ee"
-    },
-    {
-        title: "Database Architecture",
-        subtitle: "Data Management & Scalability",
-        desc: "Deep diving into MongoDB, Firebase, and relational databases.",
-        date: "Mid 2023",
-        color: "#fb923c"
-    },
-    {
-        title: "Logic & Foundations",
-        subtitle: "The Genesis",
-        desc: "Started with C/C++. Developed solid Data Structures & Logic understanding.",
-        date: "2021 - 2022",
-        color: "#fbbf24"
-    }
-];
+import { ArrowRight, Sparkles, RefreshCw } from 'lucide-react';
+import useAxios from '../../hooks/useAxios'; // আপনার কাস্টম হুক অনুযায়ী পাথ ঠিক করে নিন
 
 const Experience = () => {
+    const axios = useAxios();
+    const [journeyData, setJourneyData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        // ব্যাকএন্ড থেকে এক্সপেরিয়েন্স ডেটা ফেচ করা
+        axios.get('/experience')
+            .then(res => {
+                setJourneyData(res.data);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("Error fetching journey data:", err);
+                setLoading(false);
+            });
+    }, [axios]);
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center py-24">
+                <RefreshCw className="animate-spin text-cyan-400" size={40} />
+            </div>
+        );
+    }
+
     return (
         <section id="experience" className="relative py-24 bg-transparent overflow-hidden">
             <div className="max-w-5xl mx-auto px-6 relative z-10">
@@ -73,10 +68,9 @@ const Experience = () => {
                     </div>
 
                     <div className="space-y-10">
-                        {JOURNEY_DATA.map((item, index) => (
+                        {journeyData.map((item, index) => (
                             <motion.div
-                                key={index}
-                                // কার্ডগুলো এক এক করে বাম এবং ডান থেকে স্লাইড হয়ে আসবে
+                                key={item._id} // মঙ্গোডিবি থেকে আসা ইউনিক আইডি
                                 initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50, scale: 0.9 }}
                                 whileInView={{ opacity: 1, x: 0, scale: 1 }}
                                 viewport={{ once: true, margin: "-50px" }}
@@ -106,7 +100,6 @@ const Experience = () => {
                                     className="ml-14 md:ml-0 md:w-[45%]"
                                 >
                                     <div className="group relative bg-[#0a0f1d]/60 backdrop-blur-2xl p-6 rounded-[2rem] border border-white/5 hover:border-cyan-500/30 transition-all duration-500 shadow-2xl overflow-hidden">
-                                        {/* Hover Gradient Overlay */}
                                         <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
 
                                         <div className="flex items-center justify-between mb-3 relative z-10">
@@ -126,7 +119,7 @@ const Experience = () => {
                                         </p>
 
                                         <div className="flex items-center gap-2 text-[9px] text-white/20 font-bold tracking-widest uppercase group-hover:text-cyan-500 transition-colors relative z-10">
-                                            <span>Stage {JOURNEY_DATA.length - index}</span>
+                                            <span>Stage {journeyData.length - index}</span>
                                             <ArrowRight size={10} className="group-hover:translate-x-1 transition-transform" />
                                         </div>
                                     </div>

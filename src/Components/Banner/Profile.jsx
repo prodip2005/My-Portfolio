@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { motion } from 'framer-motion';
 import { Terminal, Download, Code2 } from 'lucide-react';
-import Img from '../../assets/1000002535.jpg';
+import useAxios from '../../hooks/useAxios';
+
 
 const Profile = () => {
+    const [data, setData] = useState(null);
+    const axios=useAxios()
+
+    useEffect(() => {
+        // http://localhost:3000/home এপিআই থেকে ডাটা আসবে
+        axios.get('/home')
+            .then((res) => {
+                setData(res.data);
+            })
+            .catch((err) => {
+                console.error("Error fetching data from MongoDB:", err);
+            });
+    }, [axios]);
+
+    // ডাটা লোড না হওয়া পর্যন্ত রেন্ডার হবে না (ডিজাইন ঠিক রাখতে)
+    if (!data) return null;
+
+    // Animation Variants (আগের মতোই আছে)
     const fadeInUp = {
         hidden: { opacity: 0, y: 30 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
@@ -13,9 +32,6 @@ const Profile = () => {
         hidden: { opacity: 0 },
         visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
     };
-
-    // সরাসরি ডাউনলোডের জন্য গুগল ড্রাইভ লিঙ্ক ফরম্যাট
-    const directDownloadLink = "https://drive.google.com/uc?export=download&id=1I0a6FWeUTrH5-4tJc1Gv3oKwcza5XrEP";
 
     return (
         <section id='#' className="relative min-h-screen flex items-center justify-center pt-28 pb-40 lg:py-20 px-6 lg:px-12 overflow-hidden bg-transparent">
@@ -42,8 +58,8 @@ const Profile = () => {
                         >
                             <div className="relative h-full w-full rounded-[1.8rem] lg:rounded-[2.8rem] overflow-hidden bg-slate-800">
                                 <img
-                                    src={Img}
-                                    alt="Prodip Hore Profile"
+                                    src={data.profileImage}
+                                    alt={`${data.firstName} ${data.lastName} Profile`}
                                     className="h-full w-full object-cover grayscale group-hover:grayscale-0 scale-105 group-hover:scale-100 transition-all duration-1000"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#0c1222] via-transparent to-transparent opacity-90" />
@@ -52,9 +68,9 @@ const Profile = () => {
                             <div className="absolute bottom-6 left-6 right-6 lg:bottom-8 lg:left-8 lg:right-8">
                                 <div className="flex items-center gap-2 mb-1 lg:mb-2">
                                     <Code2 size={14} className="text-cyan-400 animate-pulse" />
-                                    <p className="text-white/60 font-mono text-[8px] lg:text-[10px] tracking-widest uppercase">System v2.0 // MERN</p>
+                                    <p className="text-white/60 font-mono text-[8px] lg:text-[10px] tracking-widest uppercase">{data.systemTag}</p>
                                 </div>
-                                <h3 className="text-white font-bold text-xl lg:text-3xl tracking-tight uppercase">Prodip Hore</h3>
+                                <h3 className="text-white font-bold text-xl lg:text-3xl tracking-tight uppercase">{data.firstName} {data.lastName}</h3>
                                 <div className="h-1 w-10 bg-gradient-to-r from-cyan-400 to-blue-500 mt-2 rounded-full" />
                             </div>
                         </motion.div>
@@ -86,7 +102,7 @@ const Profile = () => {
                             <Terminal size={14} className="text-cyan-400" />
                         </div>
                         <span className="text-cyan-400 text-[8px] lg:text-[10px] font-bold tracking-[0.3em] lg:tracking-[0.4em] uppercase">
-                            Full Stact Developer and Machine Learning aspharent
+                            {data.role}
                         </span>
                     </motion.div>
 
@@ -94,18 +110,16 @@ const Profile = () => {
                         variants={fadeInUp}
                         className="text-4xl xs:text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[1.1] mb-6 lg:mb-8 py-2 overflow-visible"
                     >
-                        Prodip <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 italic pr-8 inline-block">Hore</span>
+                        {data.firstName} <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 italic pr-8 inline-block">{data.lastName}</span>
                     </motion.h1>
 
                     <motion.p variants={fadeInUp} className="text-slate-400 text-xs sm:text-base lg:text-xl max-w-md lg:max-w-xl mx-auto lg:mx-0 leading-relaxed mb-8 lg:mb-10 font-light px-2 lg:px-0">
-                        Engineering <span className="text-white font-medium">high-performance web ecosystems</span> where logic meets creativity.
-                        I build <span className="text-cyan-400 italic">resilient architectures</span> for digital experiences.
+                        {data.bio}
                     </motion.p>
 
                     <motion.div variants={fadeInUp} className="flex justify-center lg:justify-start">
-                        {/* Download Resume Link Button */}
                         <motion.a
-                            href={directDownloadLink}
+                            href={data.resumeLink}
                             target="_blank"
                             rel="noopener noreferrer"
                             whileHover={{ scale: 1.05 }}
@@ -116,7 +130,6 @@ const Profile = () => {
                         </motion.a>
                     </motion.div>
                 </motion.div>
-
             </div>
         </section>
     );

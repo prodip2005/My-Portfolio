@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Code, Brain, GraduationCap, Cpu, Database, Layers } from 'lucide-react';
+import { Brain, GraduationCap, Cpu, Database, Layers } from 'lucide-react';
+import useAxios from '../../hooks/useAxios'; // আপনার useAxios হুকের পাথ চেক করে নিন
 
 const About = () => {
-    // Animation Variants
+    const [aboutData, setAboutData] = useState(null);
+    const axios = useAxios();
+
+    useEffect(() => {
+        axios.get('/about')
+            .then(res => {
+               
+                const data = Array.isArray(res.data) ? res.data[0] : res.data;
+                setAboutData(data);
+            })
+            .catch(err => console.error("Error fetching about data from DB:", err));
+    }, [axios]);
+
+    if (!aboutData) return null;
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -23,9 +37,8 @@ const About = () => {
     };
 
     return (
-        <section id='about' className="relative min-h-screen py-28 px-6 lg:px-12 bg-transparent overflow-hidden flex items-center">
-            {/* --- ANIMATED BACKGROUND ELEMENTS --- */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <section id='about' className="relative min-h-screen py-28 px-6 lg:px-12 bg-transparent flex items-center">
+            <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
                 <motion.div
                     animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
                     transition={{ duration: 10, repeat: Infinity }}
@@ -50,31 +63,26 @@ const About = () => {
                     <div className="space-y-8">
                         <motion.div variants={itemVariants} className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full backdrop-blur-md">
                             <Cpu size={14} className="text-cyan-400 animate-pulse" />
-                            <span className="text-cyan-400 font-mono text-[10px] tracking-[0.3em] uppercase">Identity // Researcher</span>
+                            <span className="text-cyan-400 font-mono text-[10px] tracking-[0.3em] uppercase">
+                                {aboutData.identityTag}
+                            </span>
                         </motion.div>
 
                         <motion.h2 variants={itemVariants} className="text-5xl lg:text-7xl font-black text-white leading-[0.9] tracking-tighter">
-                            BRIDGING <br />
+                            {aboutData.titleMain} <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
-                                CODE & INTELLIGENCE
+                                {aboutData.titleGradient}
                             </span>
                         </motion.h2>
 
+                        {/* --- MAPPING DESCRIPTION LIST --- */}
                         <motion.div variants={itemVariants} className="space-y-6 text-slate-400 text-lg font-light leading-relaxed max-w-xl">
-                            <p>
-                                I am a Computer Science & Engineering student at <span className="text-white font-semibold">Patuakhali Science and Technology University (PSTU)</span>, driven by a relentless curiosity for how systems think and evolve.
-                            </p>
-
-                            <p>
-                                Currently, I architect modern digital experiences using the <span className="text-cyan-400 font-medium">MERN Stack</span>. My approach blends rigorous logic with creative problem-solving to build resilient, full-stack ecosystems.
-                            </p>
-
-                            <p>
-                                While my hands are on the web, my vision is set on the horizon of <span className="text-purple-400 font-medium">Machine Learning</span>. I aim to transition from building interfaces to engineering intelligent algorithms that redefine human-computer interaction.
-                            </p>
+                            {aboutData.descriptionList && aboutData.descriptionList.map((para, index) => (
+                                <p key={index}>
+                                    {para}
+                                </p>
+                            ))}
                         </motion.div>
-
-                     
                     </div>
 
                     {/* --- RIGHT SIDE: ANIMATED CARDS --- */}
@@ -93,13 +101,17 @@ const About = () => {
                             </div>
 
                             <div>
-                                <h3 className="text-white text-3xl font-bold mb-2 uppercase tracking-tighter">Academic Hub</h3>
-                                <p className="text-cyan-400 font-mono text-xs tracking-widest uppercase mb-4">PSTU // CSE Faculty</p>
+                                <h3 className="text-white text-3xl font-bold mb-2 uppercase tracking-tighter">
+                                    {aboutData.academicCard?.title}
+                                </h3>
+                                <p className="text-cyan-400 font-mono text-xs tracking-widest uppercase mb-4">
+                                    {aboutData.academicCard?.subTitle}
+                                </p>
                                 <div className="h-1 w-20 bg-gradient-to-r from-cyan-400 to-blue-600 rounded-full" />
                             </div>
                         </motion.div>
 
-                        {/* Secondary Floating Elements */}
+                        {/* Future Goal Card */}
                         <motion.div
                             animate={{ y: [0, 20, 0], x: [0, 10, 0] }}
                             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
@@ -109,11 +121,12 @@ const About = () => {
                                 <Brain className="text-purple-400" size={24} />
                             </div>
                             <div>
-                                <p className="text-white font-bold text-sm">Future Goal</p>
-                                <p className="text-slate-500 text-[10px] uppercase">Machine Learning</p>
+                                <p className="text-white font-bold text-sm">{aboutData.futureGoal?.title}</p>
+                                <p className="text-slate-500 text-[10px] uppercase">{aboutData.futureGoal?.subTitle}</p>
                             </div>
                         </motion.div>
 
+                        {/* Tech Stack Card */}
                         <motion.div
                             animate={{ y: [0, -20, 0], x: [0, -10, 0] }}
                             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
@@ -123,8 +136,8 @@ const About = () => {
                                 <Layers className="text-blue-400" size={24} />
                             </div>
                             <div>
-                                <p className="text-white font-bold text-sm">Tech Stack</p>
-                                <p className="text-slate-500 text-[10px] uppercase">Full-Stack MERN</p>
+                                <p className="text-white font-bold text-sm">{aboutData.techStack?.title}</p>
+                                <p className="text-slate-500 text-[10px] uppercase">{aboutData.techStack?.subTitle}</p>
                             </div>
                         </motion.div>
                     </div>
