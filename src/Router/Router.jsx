@@ -11,6 +11,9 @@ import SkillEdit from "../Pages/Dashboard/SkillEdit";
 import ExperienceEdit from "../Pages/Dashboard/ExperienceEdit";
 import ProjectEdit from "../Pages/Dashboard/ProjectEdit";
 import PrivateRoute from "../Private/PrivateRoute";
+import AllProjects from "../Components/Projects/AllProjects";
+import AchievementEdit from "../Pages/Dashboard/AchievementEdit";
+import CertificateEdit from "../Pages/Dashboard/CertificateEdit";
 
 const router = createBrowserRouter([
     {
@@ -24,6 +27,10 @@ const router = createBrowserRouter([
             {
                 path: '/login',
                 Component: Login
+            },
+            {
+                path: '/allProjects',
+                Component:AllProjects
             }
 
         ]
@@ -57,6 +64,14 @@ const router = createBrowserRouter([
             {
                 path: 'projectEdit',
                 Component: ProjectEdit
+            },
+            {
+                path: 'achievementEdit',
+                Component:AchievementEdit
+            },
+            {
+                path: 'certificateEdit',
+                Component:CertificateEdit
             }
 
         ]

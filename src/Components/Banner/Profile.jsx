@@ -9,7 +9,6 @@ const Profile = () => {
     const axios=useAxios()
 
     useEffect(() => {
-        // http://localhost:3000/home এপিআই থেকে ডাটা আসবে
         axios.get('/home')
             .then((res) => {
                 setData(res.data);

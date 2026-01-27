@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, Home, LogOut, UserCog, User, Cpu, Sparkles, Briefcase, ExternalLink } from 'lucide-react';
+import { LayoutDashboard, Home, LogOut, UserCog, User, Cpu, Sparkles, Briefcase, ExternalLink, Trophy, Award } from 'lucide-react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
 const Dashboard = () => {
@@ -58,7 +58,18 @@ const Dashboard = () => {
                         <span>Roadmap / Exp</span>
                     </Link>
 
-                    {/* --- নতুন যুক্ত করা প্রজেক্ট এডিটর --- */}
+                    {/* --- নতুন যুক্ত করা মাইলস্টোন/এচিভমেন্ট এডিটর --- */}
+                    <Link to="/dashboard/achievementEdit" className={linkStyle('/dashboard/achievementEdit')}>
+                        <Trophy size={18} />
+                        <span>Achievements</span>
+                    </Link>
+
+
+                    <Link to="/dashboard/certificateEdit" className={linkStyle('/dashboard/certificateEdit')}>
+                        <Award size={18} />
+                        <span>Credentials</span>
+                    </Link>
+
                     <Link to="/dashboard/projectEdit" className={linkStyle('/dashboard/projectEdit')}>
                         <Briefcase size={18} />
                         <span>Projects Vault</span>
