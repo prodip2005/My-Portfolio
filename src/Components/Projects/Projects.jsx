@@ -61,7 +61,7 @@ const Projects = () => {
                     <Link to={'/allProjects'}>
                         <motion.button
                             whileHover={{ scale: 1.05 }}
-                            className="hidden md:flex items-center gap-3 bg-white/5 border border-white/10 px-8 py-4 rounded-2xl text-white font-bold text-[10px] tracking-widest hover:bg-white hover:text-black transition-all group"
+                            className=" md:flex items-center gap-3 bg-white/5 border border-white/10 px-8 py-4 rounded-2xl text-white font-bold text-[10px] tracking-widest hover:bg-white hover:text-black transition-all group"
                         >
                             VIEW ALL ARTIFACTS
                             <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
