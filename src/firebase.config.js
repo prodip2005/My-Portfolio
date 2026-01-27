@@ -1,17 +1,15 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth"; // নতুন ইমপোর্ট
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyADVS82dzE-nt9aiq1P-K-RJQtHP2Da1Yo",
-    authDomain: "portfolio-shadow-monarch.firebaseapp.com",
-    projectId: "portfolio-shadow-monarch",
-    storageBucket: "portfolio-shadow-monarch.firebasestorage.app",
-    messagingSenderId: "666327536437",
-    appId: "1:666327536437:web:fe51ad943a4dc05eccb27c"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 export const app = initializeApp(firebaseConfig);
-
-// এগুলো এক্সপোর্ট করুন যাতে Login কম্পোনেন্টে ব্যবহার করা যায়
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
