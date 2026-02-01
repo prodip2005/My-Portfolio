@@ -1,8 +1,27 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+/* ব্রাউজারের ডিফল্ট স্মুথ স্ক্রল */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
 
-/* NAVBAR */
+/* স্ক্রলিং ল্যাগ কমানোর জন্য হার্ডওয়্যার এক্সিলারেশন */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ব্যাকগ্রাউন্ড যাতে স্ক্রলের সময় প্রসেসরে চাপ না দেয় */
+#science-background-container {
+  pointer-events: none;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* NAVBAR & OTHERS */
 @keyframes spin-slow {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -12,17 +31,6 @@
 }
 
 @layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-}
-
-
-/* আপনার CSS ফাইলের যেকোনো জায়গায় */
-html {
-  scroll-behavior: smooth;
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }

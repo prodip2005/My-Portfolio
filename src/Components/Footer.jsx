@@ -135,7 +135,7 @@ const Footer = () => {
     }, []);
 
     return (
-        <footer id="footer" className="relative h-[350px] w-full bg-[#030712] flex flex-col items-center justify-center overflow-hidden border-t border-white/5">
+        <footer id="footer" className="relative h-75 w-full bg-[#030712] flex flex-col items-center justify-center overflow-hidden border-t border-white/5">
             <canvas ref={canvasRef} className="absolute inset-0 z-0 cursor-crosshair" />
 
             <div className="relative z-10 flex flex-col items-center text-center select-none">

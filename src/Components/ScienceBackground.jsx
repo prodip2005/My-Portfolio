@@ -1,90 +1,79 @@
-import { useEffect, useMemo, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim";
+import React from 'react';
+import { motion } from 'framer-motion';
 
 const ScienceBackground = () => {
-    const [init, setInit] = useState(false);
+    // ২০টি তারার জন্য একটি অ্যারে
+    const stars = Array.from({ length: 20 });
 
-    useEffect(() => {
-        initParticlesEngine(async (engine) => {
-            await loadSlim(engine);
-        }).then(() => {
-            setInit(true);
-        });
-    }, []);
+    return (
+        <div className="fixed inset-0 z-0 bg-[#020617] overflow-hidden">
+            {/* ১. কসমিক গ্রেডিয়েন্ট (Cosmic Background) */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#0f172a_0%,#020617_100%)]" />
 
-    const options = useMemo(() => ({
-        background: {
-            color: { value: "#030712" } // Footer-এর সাথে ম্যাচিং ডার্ক ব্যাকগ্রাউন্ড
-        },
-        fpsLimit: 120,
-        interactivity: {
-            events: {
-                onHover: {
-                    enable: true,
-                    mode: "grab"
-                },
-            },
-            modes: {
-                grab: {
-                    distance: 180,
-                    links: { opacity: 0.8 }
-                }
-            },
-        },
-        particles: {
-            // শুধুমাত্র সাইয়ান এবং পার্পল কালার কম্বিনেশন
-            color: { value: ["#22d3ee", "#a855f7"] },
-            links: {
-                color: "#22d3ee", // লিন্ক কালার হিসেবে সাইয়ান রাখা হয়েছে যা উজ্জ্বল দেখাবে
-                distance: 110,
-                enable: true,
-                opacity: 0.35,
-                width: 1.2,
-            },
-            move: {
-                enable: true,
-                speed: 0.7,
-                direction: "none",
-                random: true,
-                outModes: { default: "bounce" }
-            },
-            number: {
-                value: 250,
-                density: {
-                    enable: true,
-                    area: 700
-                }
-            },
-            opacity: {
-                value: { min: 0.3, max: 0.7 },
-                animation: {
-                    enable: true,
-                    speed: 1,
-                    sync: false
-                }
-            },
-            shape: { type: "circle" },
-            size: {
-                value: { min: 1, max: 3 }
-            },
-        },
-        detectRetina: true,
-    }), []);
+            {/* ২. অরোরার আভা (Floating Aurora Effect) */}
+            <motion.div
+                animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.2, 0.4, 0.2],
+                    rotate: [0, 45, 0],
+                }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute -top-1/4 -left-1/4 w-full h-full bg-cyan-500/10 blur-[150px] rounded-full"
+            />
+            <motion.div
+                animate={{
+                    scale: [1.2, 1, 1.2],
+                    opacity: [0.2, 0.3, 0.2],
+                    rotate: [0, -45, 0],
+                }}
+                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                className="absolute -bottom-1/4 -right-1/4 w-full h-full bg-purple-600/10 blur-[150px] rounded-full"
+            />
 
-    if (init) {
-        return (
-            <div className="fixed inset-0 -z-10">
-                <Particles
-                    id="tsparticles"
-                    options={options}
-                    className="h-full w-full"
-                />
+            {/* ৩. ঝিকিমিকি তারা (Twinkling Science Stars) */}
+            <div className="absolute inset-0">
+                {stars.map((_, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute w-1 h-1 bg-white rounded-full"
+                        style={{
+                            top: `${Math.random() * 100}%`,
+                            left: `${Math.random() * 100}%`,
+                        }}
+                        animate={{
+                            opacity: [0.1, 0.8, 0.1],
+                            scale: [1, 1.5, 1],
+                        }}
+                        transition={{
+                            duration: Math.random() * 3 + 2,
+                            repeat: Infinity,
+                            delay: Math.random() * 5,
+                        }}
+                    />
+                ))}
             </div>
-        );
-    }
 
-    return null;
+            {/* ৪. শুটিং স্টার (Shooting Star - মাঝে মাঝে যাবে) */}
+            <motion.div
+                initial={{ x: "-10%", y: "20%", opacity: 0 }}
+                animate={{ x: "110%", y: "80%", opacity: [0, 1, 0] }}
+                transition={{ duration: 3, repeat: Infinity, repeatDelay: 7, ease: "easeOut" }}
+                className="absolute w-40 h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent rotate-[-35deg]"
+            />
+
+            {/* ৫. টেকনিক্যাল গ্রিড (খুবই হালকা) */}
+            <div 
+                className="absolute inset-0 opacity-[0.05] pointer-events-none" 
+                style={{ 
+                    backgroundImage: `linear-gradient(#22d3ee 0.5px, transparent 0.5px), linear-gradient(90deg, #22d3ee 0.5px, transparent 0.5px)`,
+                    backgroundSize: '100px 100px' 
+                }}
+            />
+
+            {/* ৬. ভিনিয়েট লেয়ার */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#020617_90%)]" />
+        </div>
+    );
 };
 
 export default ScienceBackground;

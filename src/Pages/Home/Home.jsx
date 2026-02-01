@@ -11,15 +11,16 @@ import Contact from '../../Components/Contact';
 
 const Home = () => {
     return (
-        <div className="relative overflow-x-hidden">
+        <div className="relative w-full overflow-x-hidden">
             <SocialSidebar />
-            <div id="home"><Profile /></div>
-            <div id="about"><About /></div>
-            <div id="skill"><SkillSection /></div>
-            <div id="experience"><Experience /></div>
-            <div id="projects"><Projects /></div>
-            <div id="achievements"><Achievements /></div>
-            <div id="certificates"><Certificate /></div>
+            
+            <section id="home"><Profile /></section>
+            <section id="about"><About /></section>
+            <section id="skill"><SkillSection /></section>
+            <section id="experience"><Experience /></section>
+            <section id="projects"><Projects /></section>
+            <section id="achievements"><Achievements /></section>
+            <section id="certificates"><Certificate /></section>
            
         </div>
     );

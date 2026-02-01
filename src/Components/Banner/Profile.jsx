@@ -18,10 +18,8 @@ const Profile = () => {
             });
     }, [axios]);
 
-    // ডাটা লোড না হওয়া পর্যন্ত রেন্ডার হবে না (ডিজাইন ঠিক রাখতে)
     if (!data) return null;
 
-    // Animation Variants (আগের মতোই আছে)
     const fadeInUp = {
         hidden: { opacity: 0, y: 30 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
